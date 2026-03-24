@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>My Tickets</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+background:#eef2f7;
+margin:0;
+font-family:'Segoe UI', Arial;
+}
+
+/* NAVBAR */
+.navbar{
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+padding:14px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.15);
+position:sticky;
+top:0;
+}
+
+.nav-left{
+display:flex;
+gap:30px;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+font-weight:600;
+padding:6px 10px;
+border-radius:6px;
+}
+
+.navbar a:hover{
+background:rgba(255,255,255,0.15);
+}
+
+.navbar button{
+background:#ff4d4d;
+padding:7px 16px;
+border-radius:6px;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+/* PAGE */
+.container{
+width:92%;
+margin:auto;
+margin-top:50px;
+}
+
+h1{
+text-align:center;
+color:#2a5298;
+margin-bottom:25px;
+}
+
+/* TABLE */
+.table-box{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2a5298;
+color:white;
+padding:14px;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #eee;
+text-align:center;
+}
+
+tr:hover{
+background:#f9fbff;
+}
+
+.badge{
+padding:6px 12px;
+border-radius:20px;
+color:white;
+font-size:13px;
+}
+
+.high{background:#e74c3c;}
+.medium{background:#f39c12;}
+.low{background:#27ae60;}
+
+</style>
+
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("role") !== "customer"){
+alert("Customer access only");
+window.location.href = "login.html";
+}
+
+function logout(){
+localStorage.clear();
+window.location.href = "login.html";
+}
+</script>
+
+<div class="navbar">
+<div class="nav-left">
+<a href="index.html">Raise Ticket</a>
+<a href="my_tickets.html">My Tickets</a>
+<a href="customer_dashboard.html">Dashboard</a>
+</div>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<h1>My Tickets</h1>
+
+<div class="table-box">
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Subject</th>
+<th>Category</th>
+<th>Priority</th>
+<th>Status</th>
+<th>Created</th>
+</tr>
+</thead>
+
+<tbody id="table"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+async function loadMyTickets(){
+
+const email = localStorage.getItem("email");
+
+const res = await fetch("http://127.0.0.1:5000/my_tickets",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email})
+});
+
+const data = await res.json();
+
+const table = document.getElementById("table");
+table.innerHTML = "";
+
+data.forEach(t => {
+
+let cls = t[3];
+
+table.innerHTML += `
+<tr>
+<td>${t[0]}</td>
+<td>${t[1]}</td>
+<td>${t[2]}</td>
+<td><span class="badge ${cls}">${t[3]}</span></td>
+<td>${t[4]}</td>
+<td>${t[5]}</td>
+</tr>
+`;
+
+});
+
+}
+
+loadMyTickets();
+
+</script>
+
+</body>
+</html>

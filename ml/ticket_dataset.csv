@@ -1,0 +1,51 @@
+text,category,priority
+cannot login to account,account issue,high
+forgot password cannot reset,account issue,medium
+account locked after multiple attempts,account issue,high
+unable to update profile information,account issue,medium
+email verification not working,account issue,medium
+cannot change account password,account issue,medium
+account suspended without reason,account issue,high
+profile picture upload failing,account issue,low
+unable to connect my account,account issue,medium
+account login page not responding,account issue,high
+account recovery email not received,account issue,medium
+account details not saving,account issue,low
+payment deducted but order not placed,billing issue,high
+need refund for wrong charge,billing issue,high
+invoice not generated,billing issue,medium
+charged twice for subscription,billing issue,high
+refund not processed yet,billing issue,high
+payment gateway showing error,billing issue,high
+incorrect billing amount displayed,billing issue,medium
+subscription renewal failed,billing issue,medium
+payment page crashing,billing issue,high
+unable to download invoice,billing issue,low
+refund request pending too long,billing issue,high
+payment confirmation not received,billing issue,medium
+website shows server error,technical issue,high
+application crashes on login,technical issue,high
+page not loading properly,technical issue,medium
+search feature not working,technical issue,medium
+dashboard taking too long to load,technical issue,medium
+website stuck on loading screen,technical issue,high
+file upload not working,technical issue,medium
+error while submitting form,technical issue,medium
+mobile app crashes frequently,technical issue,high
+notification system not working,technical issue,low
+data not updating on dashboard,technical issue,medium
+system showing unknown error,technical issue,high
+request new dashboard feature,feature request,low
+please add dark mode,feature request,low
+add export to pdf option,feature request,low
+request integration with google drive,feature request,low
+need multi language support,feature request,low
+please add notification settings,feature request,low
+suggest adding mobile widgets,feature request,low
+add option to customize dashboard,feature request,low
+add advanced search filters,feature request,low
+please include auto save feature,feature request,low
+need ability to schedule reports,feature request,low
+add two factor authentication option,feature request,medium
+add user activity logs feature,feature request,low
+request calendar integration,feature request,low

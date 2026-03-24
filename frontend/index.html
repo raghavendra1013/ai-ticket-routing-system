@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Customer Support Portal</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+background:#eef2f7;
+font-family: 'Segoe UI', Arial, sans-serif;
+margin:0;
+}
+
+.navbar{
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+padding:14px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.15);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.nav-left{
+display:flex;
+gap:30px;
+align-items:center;
+}
+
+.navbar a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+font-size:15px;
+padding:6px 10px;
+border-radius:6px;
+}
+
+.navbar a:hover{
+background:rgba(255,255,255,0.15);
+}
+
+.navbar button{
+background:#ff4d4d;
+color:white;
+border:none;
+padding:7px 16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.container{
+width:100%;
+max-width:650px;
+margin:60px auto;
+padding:0 15px;
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+color:#2a5298;
+}
+
+form{
+background:white;
+padding:30px;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+label{
+font-weight:600;
+display:block;
+margin-bottom:6px;
+}
+
+input, textarea{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #dcdcdc;
+}
+
+#submitBtn{
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+cursor:pointer;
+width:100%;
+}
+
+#resultBox{
+margin-top:25px;
+display:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("role") !== "customer"){
+alert("Please login as customer");
+window.location.href = "login.html";
+}
+
+function logout(){
+localStorage.clear();
+window.location.href = "login.html";
+}
+
+window.onload = function(){
+const email = localStorage.getItem("email");
+if(email){
+document.getElementById("email").value = email;
+}
+}
+</script>
+
+<div class="navbar">
+<div class="nav-left">
+<a href="index.html">Raise Ticket</a>
+<a href="my_tickets.html">My Tickets</a>
+<a href="customer_dashboard.html">Dashboard</a>
+</div>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<h1>Customer Support Portal</h1>
+
+<form id="ticketForm">
+
+<div class="form-group">
+<label>Name</label>
+<input type="text" id="name" required>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="email" required>
+</div>
+
+<div class="form-group">
+<label>Subject</label>
+<input type="text" id="subject" required>
+</div>
+
+<div class="form-group">
+<label>Product / Service</label>
+<input type="text" id="product">
+</div>
+
+<div class="form-group">
+<label>Description</label>
+<textarea id="description" rows="4" required></textarea>
+</div>
+
+<button type="button" id="submitBtn">Submit Ticket</button>
+
+</form>
+
+<div id="resultBox"></div>
+
+</div>
+
+<script>
+document.getElementById("ticketForm").addEventListener("submit", function(e){
+e.preventDefault();
+});
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

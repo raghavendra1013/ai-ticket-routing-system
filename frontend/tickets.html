@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Support Ticket Management</title>
+
+<style>
+body{
+background:#eef2f7;
+margin:0;
+font-family:'Segoe UI', Arial;
+}
+
+.navbar{
+background:linear-gradient(135deg,#1e3c72,#2a5298);
+padding:14px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.nav-left{
+display:flex;
+gap:30px;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+font-weight:600;
+}
+
+.navbar button{
+background:#ff4d4d;
+padding:7px 16px;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+.container{
+width:92%;
+margin:auto;
+margin-top:40px;
+}
+
+h1{
+text-align:center;
+color:#2a5298;
+}
+
+.table-container{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2a5298;
+color:white;
+padding:14px;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #eee;
+text-align:center;
+}
+
+.badge{
+padding:6px 12px;
+border-radius:20px;
+color:white;
+}
+
+.priority-high{background:#e74c3c;}
+.priority-medium{background:#f39c12;}
+.priority-low{background:#27ae60;}
+</style>
+
+</head>
+
+<body>
+
+<script>
+const role = localStorage.getItem("role");
+
+if(!role){
+alert("Login required");
+window.location.href = "login.html";
+}
+
+function logout(){
+localStorage.clear();
+window.location.href = "login.html";
+}
+</script>
+
+<div class="navbar">
+<div class="nav-left">
+<a href="tickets.html">Manage Tickets</a>
+<a href="dashboard.html">Dashboard</a>
+</div>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+<h1 id="title">Support Ticket Management</h1>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Subject</th>
+<th>Category</th>
+<th>Priority</th>
+<th>Status</th>
+<th id="agentCol">Agent</th>
+<th id="actionCol">Action</th>
+</tr>
+</thead>
+
+<tbody id="ticketTable"></tbody>
+
+</table>
+</div>
+
+</div>
+
+<script>
+
+async function loadTickets(){
+
+const table = document.getElementById("ticketTable");
+table.innerHTML = "";
+
+/* CUSTOMER VIEW */
+if(role === "customer"){
+
+document.getElementById("title").innerText = "My Tickets";
+document.getElementById("agentCol").style.display = "none";
+document.getElementById("actionCol").style.display = "none";
+
+const email = localStorage.getItem("email");
+
+const res = await fetch("http://127.0.0.1:5000/my_tickets",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email})
+});
+
+const data = await res.json();
+
+data.forEach(ticket=>{
+table.innerHTML += `
+<tr>
+<td>${ticket[0]}</td>
+<td>${ticket[1]}</td>
+<td>${ticket[2]}</td>
+<td>${ticket[3]}</td>
+<td>${ticket[4]}</td>
+</tr>
+`;
+});
+
+return;
+}
+
+/* ADMIN VIEW (FIXED) */
+const res = await fetch("http://127.0.0.1:5000/tickets");
+const data = await res.json();
+
+if(!Array.isArray(data)){
+console.error("API ERROR:", data);
+return;
+}
+
+data.forEach(ticket => {
+
+let cls = "";
+
+if(ticket.priority === "high") cls="priority-high";
+if(ticket.priority === "medium") cls="priority-medium";
+if(ticket.priority === "low") cls="priority-low";
+
+table.innerHTML += `
+<tr>
+<td>${ticket.id}</td>
+<td>${ticket.subject}</td>
+<td>${ticket.category}</td>
+<td><span class="badge ${cls}">${ticket.priority}</span></td>
+<td>${ticket.status}</td>
+<td>${ticket.agent_assigned || "Unassigned"}</td>
+<td>
+<select onchange="updateStatus(${ticket.id},this.value)">
+<option ${ticket.status=='Open'?'selected':''}>Open</option>
+<option ${ticket.status=='In Progress'?'selected':''}>In Progress</option>
+<option ${ticket.status=='Resolved'?'selected':''}>Resolved</option>
+<option ${ticket.status=='Escalated'?'selected':''}>Escalated</option>
+</select>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+async function updateStatus(id,status){
+
+await fetch("http://127.0.0.1:5000/update_status",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id,status})
+});
+
+loadTickets();
+}
+
+loadTickets();
+
+</script>
+
+</body>
+</html>

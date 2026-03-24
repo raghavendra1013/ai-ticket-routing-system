@@ -1,0 +1,32 @@
+# Python cache
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Database
+*.db
+
+# ML models (optional - recommended to ignore large files)
+models/*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Temporary files
+*.tmp
