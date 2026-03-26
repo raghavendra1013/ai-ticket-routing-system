@@ -104,12 +104,21 @@ grid-template-columns:1fr 1fr;
 gap:25px;
 }
 
+/* ✅ FIX START */
 .chart-box{
 background:white;
 padding:20px;
 border-radius:12px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
+height:350px;              /* FORCE SAME HEIGHT */
+display:flex;
 }
+
+.chart-box canvas{
+width:100% !important;
+height:100% !important;
+}
+/* ✅ FIX END */
 
 /* QUEUE */
 .queue-section{
@@ -235,42 +244,41 @@ document.getElementById("openTickets").innerText = data.open;
 document.getElementById("resolvedTickets").innerText = data.resolved;
 document.getElementById("resolutionTime").innerText = data.avg_resolution_time ? data.avg_resolution_time.toFixed(2) : 0;
 
-/* SAFE FALLBACKS */
 const categories = data.categories || [];
 const priorities = data.priorities || [];
 const agents = data.agents || [];
 const performance = data.agent_performance || [];
 
-/* CATEGORY */
 new Chart(document.getElementById("categoryChart"),{
 type:"pie",
+options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
 data:{
 labels: categories.length ? categories.map(c=>c[0]) : ["No Data"],
 datasets:[{data: categories.length ? categories.map(c=>c[1]) : [1]}]
 }
 });
 
-/* PRIORITY */
 new Chart(document.getElementById("priorityChart"),{
 type:"bar",
+options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
 data:{
 labels: priorities.length ? priorities.map(p=>p[0]) : ["No Data"],
 datasets:[{data: priorities.length ? priorities.map(p=>p[1]) : [0]}]
 }
 });
 
-/* AGENTS */
 new Chart(document.getElementById("agentChart"),{
 type:"bar",
+options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
 data:{
 labels: agents.length ? agents.map(a=>a[0]) : ["No Data"],
 datasets:[{data: agents.length ? agents.map(a=>a[1]) : [0]}]
 }
 });
 
-/* PERFORMANCE ✅ FIXED */
 new Chart(document.getElementById("performanceChart"),{
 type:"bar",
+options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
 data:{
 labels: performance.length ? performance.map(a=>a[0]) : ["No Data"],
 datasets:[{data: performance.length ? performance.map(a=>a[1]) : [0]}]
@@ -281,7 +289,6 @@ datasets:[{data: performance.length ? performance.map(a=>a[1]) : [0]}]
 console.error("Dashboard crash:", err);
 }
 }
-
 
 async function loadQueues(){
 try{
@@ -317,7 +324,6 @@ html += `
 });
 }
 
-/* ✅ FIXED URL (IMPORTANT) */
 html += `
 <button class="queue-btn" onclick="processNext('${agent}')">
 Process Next
@@ -333,8 +339,6 @@ console.error("Queue crash:", err);
 }
 }
 
-
-/* ✅ FIXED TEMPLATE STRING */
 async function processNext(agent){
 try{
 const res = await fetch(`http://127.0.0.1:5000/process_next/${agent}`,{
@@ -359,8 +363,6 @@ console.error("Process error:", err);
 }
 }
 
-
-/* AUTO LOAD */
 loadDashboard();
 loadQueues();
 
