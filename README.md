@@ -1,286 +1,272 @@
-AI POWERED SUPPORT TICKET ROUTING SYSTEM
+AI-Powered Support Ticket Routing System.
+1. Overview
 
-An intelligent end-to-end customer support platform that automates ticket classification, prioritization, and agent assignment using Machine Learning and a queue-based routing system.
+This project is a full-stack AI-powered customer support ticket management system. It automates ticket classification, priority prediction, agent assignment, and analytics.
 
-This project simulates a real-world support infrastructure used in SaaS and enterprise systems, combining AI, backend APIs, and frontend dashboards.
+The system is designed to address real-world problems such as:
 
-SYSTEM ARCHITECTURE
+Manual ticket sorting
+Uneven agent workload
+Lack of real-time monitoring
 
-High-Level Architecture (Text Diagram)
+It integrates Machine Learning with backend APIs and frontend dashboards to create a complete intelligent support system.
 
-Frontend (HTML, CSS, JavaScript)
-|
-| HTTP Requests (REST API)
-v
-Flask Backend (app.py)
-|
-|------------------------------|
-| | |
-v v v
-ML Engine Routing Engine Authentication System
-(model.py) (router.py) (OTP + Login)
-| | |
-|--------------|---------------|
-v
-SQLite Database
-(tickets.db)
-|
-v
-Email Service (SMTP)
 
-ARCHITECTURE EXPLANATION
+2. Features
 
-Frontend Layer
-
-Built using HTML, CSS, and JavaScript
-Handles user interaction
-Sends API requests to backend
-Pages include ticket submission, dashboards, login system
-
-Backend Layer (Flask)
-
-Core controller of the application
-Handles API endpoints, business logic, and database operations
-Integrates ML predictions and routing decisions
-Returns JSON responses
-
-Machine Learning Engine
-
-Uses TF-IDF vectorization + Logistic Regression
+2.1 AI-Based Ticket Classification
+Uses TF-IDF with Logistic Regression
 Predicts:
-Category of ticket
-Priority of ticket
-Includes confidence scoring
-Low confidence fallback sets priority to medium
+Ticket category
+Ticket priority
+Provides confidence score for predictions
 
-Routing Engine
+2.2 Intelligent Agent Assignment
+Category-based routing
+Load balancing using least active tickets
+High-priority tickets assigned to expert agents
 
-Assigns agents based on ticket category
-Uses load balancing (least active tickets)
-High priority tickets assigned to top agents
-Maintains queue per agent
+2.3 Queue Management System
+Priority-based ordering:
+High → Medium → Low
+FIFO within the same priority level
+Agent capacity limit (maximum 3 active tickets)
 
-Queue System
+2.4 OTP-Based Authentication
+Email-based OTP verification using SMTP
+Secure login flow
 
-Priority-based ordering (High > Medium > Low)
-FIFO within same priority
-Agent capacity limit (max 3 active tickets)
-Supports "process next ticket" functionality
-
-Database Layer (SQLite)
-Tables:
-
-tickets
-Stores ticket data, status, timestamps, agent assignment
-users
-Stores login credentials and roles
-ticket_history
-Tracks status changes over time
-
-Authentication System
-
-OTP-based login via email
-Role-based access:
+2.5 Role-Based Access Control
 Admin
-Customer
-
-Analytics System
-
-Real-time queries from database
-Displayed using charts
-Admin dashboard and customer dashboard
-
-END TO END FLOW
-
-User submits ticket
--> Frontend sends request to backend
--> Backend calls ML model
--> Category and priority predicted
--> Routing engine assigns agent
--> Ticket stored in database
--> Ticket enters agent queue
--> Admin manages tickets
--> Customer tracks status
-
-CORE FEATURES
-
-AI Ticket Classification
-
-Automatic category detection
-Priority prediction with confidence score
-
-Smart Agent Assignment
-
-Category-based mapping
-Load balancing
-High-priority escalation
-
-Queue Management
-
-Priority queues
-Agent capacity control
-Sequential processing
-
-OTP Authentication
-
-Email-based verification
-Secure login system
-
-Customer Features
-
-Raise tickets
-View personal tickets
-Track ticket status
-View analytics dashboard
-
-Admin Features
-
 View all tickets
 Update ticket status
-Monitor analytics
-Track agent performance
-View queue status
+Monitor analytics dashboard
+Manage agent queues
+Customer
+Raise support tickets
+Track personal tickets
+View personal dashboard
 
-Interactive Dashboards
-
-Built using Chart.js
-Includes:
+2.6 Analytics Dashboard
+Admin Dashboard
+Total tickets
+Open and resolved tickets
 Category distribution
-Priority analysis
+Priority distribution
 Agent workload
-Resolution metrics
+Agent performance
+Average resolution time
+Customer Dashboard
+Personal ticket statistics
+Category insights
+Status tracking
 
-TECH STACK
+2.7 Ticket History Tracking
+Logs all ticket status changes with timestamps
 
-Backend
 
+3. System Architecture
+
+Frontend (HTML, CSS, JavaScript)
+↓
+Flask Backend (API Layer)
+↓
+Business Logic (Routing and ML)
+↓
+SQLite Database
+↓
+Machine Learning Models
+
+
+4. Tech Stack
+4.1 Backend
+Python
 Flask
+Flask-CORS
 SQLite
 
-Frontend
+4.2 Machine Learning
+Scikit-learn
+Pandas
+Joblib
 
+4.3 Frontend
 HTML5
 CSS3
 JavaScript
+Chart.js
 
-Machine Learning
 
-Scikit-learn
+5. Machine Learning Pipeline
+
+5.1 Dataset
+File: ticket_dataset.csv
+Contains text, category, and priority labels
+
+5.2 Model
 TF-IDF Vectorizer
-Logistic Regression
+Logistic Regression classifier
 
-Other Tools
+5.3 Outputs
+Category prediction
+Priority prediction
 
-Joblib (model saving)
-SMTP (email OTP system)
+5.4 Evaluation
+Train-test split (80/20)
+Accuracy calculated on test data
 
-PROJECT STRUCTURE
+5.5 Model Files
 
-backend
-
-app.py (main server)
-database.py (database setup)
-model.py (ML prediction)
-router.py (agent routing + queues)
-train_model.py (model training)
-
-frontend
-
-index.html (raise ticket)
-login.html (login/signup)
-dashboard.html (admin dashboard)
-customer_dashboard.html
-tickets.html (manage tickets)
-my_tickets.html
-script.js (logic)
-style.css (design)
-
-data
-
-ticket_dataset.csv
-
-models
+models/
 
 classifier.pkl
 priority_model.pkl
 
-database
 
-tickets.db
+6. Project Structure
 
-API ENDPOINTS
+project/
+│
+├── backend/
+│ ├── app.py
+│ ├── database.py
+│ ├── model.py
+│ ├── router.py
+│ ├── train_model.py
+│
+├── models/
+│ ├── classifier.pkl
+│ ├── priority_model.pkl
+│
+├── database/
+│ └── tickets.db
+│
+├── frontend/
+│ ├── index.html
+│ ├── login.html
+│ ├── tickets.html
+│ ├── my_tickets.html
+│ ├── dashboard.html
+│ ├── customer_dashboard.html
+│ ├── style.css
+│ ├── script.js
+│
+└── ticket_dataset.csv
 
-Authentication
 
-POST /send_otp
-POST /verify_otp
-POST /login
-POST /signup
+7. Installation and Setup
 
-Tickets
+7.1 Clone Repository
 
-POST /submit_ticket
-GET /tickets
-POST /my_tickets
-POST /update_status
+git clone https://github.com/raghavendra1013/ai-ticket-routing-system
 
-Analytics
+cd ai-ticket-routing-system
 
-GET /ticket_stats
-POST /customer_stats
+7.2 Install Dependencies
 
-Queue System
-
-GET /full_queue_status
-POST /process_next/<agent>
-
-MACHINE LEARNING PIPELINE
-
-Input: Ticket description
-
-Step 1: Text vectorization using TF-IDF
-Step 2: Classification using Logistic Regression
-
-Outputs:
-
-Category prediction
-Priority prediction
-Confidence score
-
-SETUP INSTRUCTIONS
-
-Install dependencies
 pip install flask flask-cors scikit-learn pandas joblib
-Train models
+
+7.3 Train Machine Learning Model
+
+cd backend
 python train_model.py
-Run backend
+
+7.4 Run Backend Server
+
 python app.py
-Open frontend
-Open login.html in browser
 
-DEFAULT ADMIN LOGIN
+Server will run at:
+http://127.0.0.1:5000
 
+7.5 Open Frontend
+
+Open the following file in your browser:
+frontend/login.html
+
+
+8. Default Credentials
+
+Admin Login:
 Username: admin
 Password: admin123
 
-SYSTEM HIGHLIGHTS
+9. Usage Guide
+9.1 Customer Flow
+Sign up or log in using OTP verification
+Submit a ticket
+System predicts category and priority
+Ticket is assigned to an agent
+Track ticket status in dashboard
 
-Fully automated ticket routing
-AI-driven prioritization
-Queue-based workload management
-Real-time dashboards
-Clean modular architecture
-Scalable design
+9.2 Admin Flow
+Log in as admin
+View all tickets
+Update ticket status
+Monitor analytics dashboard
+Manage and process queues
 
-FUTURE IMPROVEMENTS
 
-JWT authentication
-Cloud deployment (AWS, Docker)
-Real-time updates (WebSockets)
+10. API Documentation
+
+10.1 Authentication
+
+POST /signup → Register user
+POST /login → Login
+POST /send_otp → Send OTP
+POST /verify_otp → Verify OTP
+
+10.2 Tickets
+
+POST /submit_ticket → Create ticket
+GET /tickets → Get all tickets
+POST /my_tickets → Get user tickets
+POST /update_status → Update ticket status
+
+10.3 Dashboard
+
+GET /ticket_stats → Admin statistics
+POST /customer_stats → Customer statistics
+
+10.4 Queue
+
+GET /full_queue_status → View all queues
+POST /process_next/<agent> → Process next ticket
+
+
+11. Database Schema
+11.1 Users Table
+
+id | username | email | password | role
+
+11.2 Tickets Table
+
+id | name | email | subject | description
+category | priority | status
+agent_assigned
+created_at | resolved_at
+
+11.3 Ticket History Table
+
+id | ticket_id | status | timestamp
+
+
+12. Important Notes
+
+Update email credentials in app.py for OTP functionality
+Train models before starting backend
+SQLite database is created automatically
+Ensure correct file paths for model files
+
+
+13. Future Improvements
+JWT-based authentication
+Deployment (AWS, Render, etc.)
+Real-time updates using WebSockets
 Advanced NLP models (BERT)
-SLA tracking system
-Multi-language support
+File attachment support
+Multi-admin role management
 
 
+14. Author
 
-Full-stack AI project combining machine learning, backend systems, and frontend dashboards to simulate a real-world support platform.
+This project was developed as a full-stack AI system combining machine learning, backend development, frontend design, and database management.
