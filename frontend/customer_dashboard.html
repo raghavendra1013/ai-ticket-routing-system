@@ -92,13 +92,11 @@ margin-bottom:15px;
 color:#2a5298;
 }
 
-/* ✅ FIX START */
 .chart-box canvas{
 width:100% !important;
 height:100% !important;
 max-width:none !important;
 }
-/* ✅ FIX END */
 
 </style>
 
@@ -197,7 +195,7 @@ categoryChart = new Chart(document.getElementById("categoryChart"),{
 type:"pie",
 options:{
 responsive:true,
-maintainAspectRatio:false   /* ✅ FIX */
+maintainAspectRatio:false   
 },
 data:{
 labels:catLabels,
@@ -225,7 +223,7 @@ data:statusValues
 },
 options:{
 responsive:true,
-maintainAspectRatio:false,  /* ✅ FIX */
+maintainAspectRatio:false, 
 scales:{
 y:{
 beginAtZero:true,
