@@ -53,8 +53,8 @@ def send_otp():
     otp = str(random.randint(100000, 999999))
     otp_store[username] = otp
 
-    sender_email = "aiticketrouter@gmail.com"
-    sender_password = "hnpysyfslvovtjix"
+    sender_email = "ADD an Email here"
+    sender_password = "ADD APP PASSWORD"
 
     msg = MIMEText(f"Your OTP is: {otp}")
     msg["Subject"] = "Login OTP"
