@@ -140,7 +140,17 @@ display:none;
 <div id="loginForm">
 <input id="loginUsername" placeholder="Username">
 <input id="loginPassword" type="password" placeholder="Password">
-<button class="main-btn" onclick="login()">Login</button>
+
+<!-- OTP FIELD -->
+<input id="otpInput" placeholder="Enter OTP" class="hidden">
+
+<!-- ✅ MESSAGE DISPLAY (NEW) -->
+<p id="msg" style="font-size:14px;margin-top:5px;"></p>
+
+<!-- BUTTONS -->
+<button class="main-btn" id="loginBtn" onclick="sendOtp()">Login</button>
+<button class="main-btn hidden" id="verifyBtn" onclick="verifyOtp()">Verify OTP</button>
+
 </div>
 
 <div id="signupForm" class="hidden">
@@ -170,7 +180,8 @@ loginTab.classList.remove("active");
 title.innerText="Signup";
 }
 
-async function login(){
+/* SEND OTP */
+async function sendOtp(){
 
 const username=loginUsername.value;
 const password=loginPassword.value;
@@ -185,7 +196,24 @@ const data=await res.json();
 
 if(data.message){
 
-const otp = prompt("Enter OTP sent to your email:");
+document.getElementById("msg").innerText="OTP sent to your email";
+document.getElementById("msg").style.color="#2a5298";
+
+document.getElementById("otpInput").classList.remove("hidden");
+document.getElementById("verifyBtn").classList.remove("hidden");
+document.getElementById("loginBtn").classList.add("hidden");
+
+}else{
+document.getElementById("msg").innerText=data.error;
+document.getElementById("msg").style.color="red";
+}
+}
+
+/* VERIFY OTP */
+async function verifyOtp(){
+
+const username=loginUsername.value;
+const otp=document.getElementById("otpInput").value;
 
 const verify = await fetch("http://127.0.0.1:5000/verify_otp",{
 method:"POST",
@@ -196,22 +224,25 @@ body:JSON.stringify({username,otp})
 const result = await verify.json();
 
 if(result.role){
+
 localStorage.setItem("role",result.role);
 localStorage.setItem("email",result.email);
 localStorage.setItem("username",username);
 
+document.getElementById("msg").innerText="Login successful...";
+document.getElementById("msg").style.color="green";
+
+setTimeout(()=>{
 if(result.role==="admin"){
 window.location.href="dashboard.html";
 }else{
 window.location.href="index.html";
 }
+},1000);
 
 }else{
-alert(result.error);
-}
-
-}else{
-alert(data.error);
+document.getElementById("msg").innerText=result.error;
+document.getElementById("msg").style.color="red";
 }
 }
 
