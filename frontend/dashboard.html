@@ -103,14 +103,13 @@ display:grid;
 grid-template-columns:1fr 1fr;
 gap:25px;
 }
-
-/* ✅ FIX START */
+  
 .chart-box{
 background:white;
 padding:20px;
 border-radius:12px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
-height:350px;              /* FORCE SAME HEIGHT */
+height:350px;           
 display:flex;
 }
 
@@ -118,7 +117,6 @@ display:flex;
 width:100% !important;
 height:100% !important;
 }
-/* ✅ FIX END */
 
 /* QUEUE */
 .queue-section{
@@ -251,7 +249,7 @@ const performance = data.agent_performance || [];
 
 new Chart(document.getElementById("categoryChart"),{
 type:"pie",
-options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
+options:{responsive:true, maintainAspectRatio:false},  
 data:{
 labels: categories.length ? categories.map(c=>c[0]) : ["No Data"],
 datasets:[{data: categories.length ? categories.map(c=>c[1]) : [1]}]
@@ -260,7 +258,7 @@ datasets:[{data: categories.length ? categories.map(c=>c[1]) : [1]}]
 
 new Chart(document.getElementById("priorityChart"),{
 type:"bar",
-options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
+options:{responsive:true, maintainAspectRatio:false},   
 data:{
 labels: priorities.length ? priorities.map(p=>p[0]) : ["No Data"],
 datasets:[{data: priorities.length ? priorities.map(p=>p[1]) : [0]}]
@@ -269,7 +267,7 @@ datasets:[{data: priorities.length ? priorities.map(p=>p[1]) : [0]}]
 
 new Chart(document.getElementById("agentChart"),{
 type:"bar",
-options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
+options:{responsive:true, maintainAspectRatio:false},   
 data:{
 labels: agents.length ? agents.map(a=>a[0]) : ["No Data"],
 datasets:[{data: agents.length ? agents.map(a=>a[1]) : [0]}]
@@ -278,7 +276,7 @@ datasets:[{data: agents.length ? agents.map(a=>a[1]) : [0]}]
 
 new Chart(document.getElementById("performanceChart"),{
 type:"bar",
-options:{responsive:true, maintainAspectRatio:false},   /* ✅ FIX */
+options:{responsive:true, maintainAspectRatio:false},
 data:{
 labels: performance.length ? performance.map(a=>a[0]) : ["No Data"],
 datasets:[{data: performance.length ? performance.map(a=>a[1]) : [0]}]
