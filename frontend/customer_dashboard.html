@@ -77,7 +77,7 @@ background:white;
 padding:20px;
 border-radius:12px;
 box-shadow:0 8px 25px rgba(0,0,0,0.08);
-height:420px;
+height:320px;
 
 display:flex;
 flex-direction:column;
@@ -92,12 +92,14 @@ margin-bottom:15px;
 color:#2a5298;
 }
 
-/* CANVAS FIX */
-canvas{
+/* ✅ FIX START */
+.chart-box canvas{
 width:100% !important;
-max-width:350px;
-height:300px !important;
+height:100% !important;
+max-width:none !important;
 }
+/* ✅ FIX END */
+
 </style>
 
 </head>
@@ -193,6 +195,10 @@ catValues = data.categories.map(c=>c[1]);
 
 categoryChart = new Chart(document.getElementById("categoryChart"),{
 type:"pie",
+options:{
+responsive:true,
+maintainAspectRatio:false   /* ✅ FIX */
+},
 data:{
 labels:catLabels,
 datasets:[{data:catValues}]
@@ -219,7 +225,7 @@ data:statusValues
 },
 options:{
 responsive:true,
-maintainAspectRatio:false,
+maintainAspectRatio:false,  /* ✅ FIX */
 scales:{
 y:{
 beginAtZero:true,
